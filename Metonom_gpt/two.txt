@@ -1,0 +1,76 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/sleep.h>
+
+// Определение частоты тактирования
+#define F_CPU 4800000UL
+
+// Определение частоты звука и паузы
+#define SOUND_FREQUENCY 4000
+#define SOUND_DURATION 500 // 0.5 секунды
+#define PAUSE_DURATION 6500 // 6.5 секунды
+
+// Вычисление необходимого делителя для достижения заданной частоты
+#define PRESCALER ((F_CPU / (2 * SOUND_FREQUENCY)) - 1)
+
+// Счетчики длительности звука и паузы
+volatile uint16_t sound_counter = 0;
+volatile uint16_t pause_counter = 0;
+
+// Счетчик циклов
+volatile uint8_t loop_counter = 0;
+
+int main(void) {
+    // Настройка порта для генерации звука
+    DDRB |= (1 << PB1);
+
+    // Настройка таймера
+    TCCR1B |= (1 << WGM12); // Режим CTC с предделителем на 64
+    TCCR1B |= (1 << CS10) | (1 << CS11);
+    OCR1A = PRESCALER;
+
+    // Включение прерывания по совпадению таймера с регистром сравнения
+    TIMSK |= (1 << OCIE1A);
+
+    // Включение глобального разрешения прерываний
+    sei();
+
+    while (loop_counter < 100) {
+        if (sound_counter < SOUND_DURATION) {
+            // Генерация звука
+            PORTB ^= (1 << PB1);
+        } else if (pause_counter < PAUSE_DURATION) {
+            // Пауза между звуками
+            PORTB &= ~(1 << PB1); // Отключение звука
+        } else {
+            // Сброс счетчиков и увеличение счетчика циклов
+            sound_counter = 0;
+            pause_counter = 0;
+            loop_counter++;
+        }
+    }
+
+    // Выключение порта для генерации звука
+    PORTB &= ~(1 << PB1);
+
+    // Перевод микроконтроллера в спящий режим
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
+    sleep_mode();
+
+    return 0;
+}
+
+// Обработчик прерывания
+ISR(TIMER1_COMPA_vect) {
+    // Увеличение счетчиков
+    sound_counter++;
+    pause_counter++;
+}
+
+В этой программе добавлены счетчики sound_counter, pause_counter и loop_counter, чтобы отслеживать 
+длительность звука, паузы и количество выполненных циклов соответственно. При достижении заданной 
+длительности звука или паузы соответствующий счетчик сбрасывается и происходит переключение состояния 
+вывода PB1 (включение/выключение звука). По достижении 100 циклов микроконтроллер переходит в 
+спящий режим с помощью функций из библиотеки avr/sleep.h.
+

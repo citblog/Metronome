@@ -1,0 +1,54 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/kostia/Документы/PlatformIO/Projects/Metronome/include",
+                "/home/kostia/Документы/PlatformIO/Projects/Metronome/src",
+                "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/cores/MicroCore",
+                "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/variants/attiny13",
+                "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/AVR_examples/src",
+                "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/EEPROM/src",
+                "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/Serial_exampes/src",
+                "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/TinySPI/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/kostia/Документы/PlatformIO/Projects/Metronome/include",
+                    "/home/kostia/Документы/PlatformIO/Projects/Metronome/src",
+                    "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/cores/MicroCore",
+                    "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/variants/attiny13",
+                    "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/AVR_examples/src",
+                    "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/EEPROM/src",
+                    "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/Serial_exampes/src",
+                    "/home/kostia/.platformio/packages/framework-arduino-avr-microcore/libraries/TinySPI/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60109",
+                "ARDUINO_AVR_ATTINY13",
+                "F_CPU=9600000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATtiny13A__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "/home/kostia/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=attiny13a",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
