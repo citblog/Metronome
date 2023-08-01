@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
+// Рабочий генератор 4 Кгц, два канала , COM0A0 (PB0) без прерывания, PB1 с прерыванием
 // Определение частоты тактирования
 #define F_CPU 4800000UL
 
