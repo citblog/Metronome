@@ -20,10 +20,10 @@ void setup_CTC()
 {
     TCCR0A = 0;
     TCCR0B = 0;
-    TCCR0A |= (1 << WGM01);  // Выбор режима CTC (Clear Timer on Compare)
+ //   TCCR0A |= (1 << WGM01);  // Выбор режима CTC (Clear Timer on Compare)
     TCCR0A |= (1 << COM0A0); // Toggle OC0A on Compare Match
     TCCR0B |= (1 << CS01);   // Установка предделителя на 8 |(1 << CS00) 64
-    OCR0A = PRESCALER; // Установка значения для генерации нужной частоты
+    OCR0A=PRESCALER; // Установка значения для генерации нужной частоты
     //OCR0A = 74;
     DDRB |= (1 << PB0);
 }
