@@ -9,9 +9,9 @@
 #define SOUND_FREQUENCY 4000
 // Вычисление необходимого делителя для достижения заданной частоты звука
 // #define PRESCALER ((F_CPU / (16 * SOUND_FREQUENCY)) - 1) //(4800000/8)/(2*4000)-1=74
-#define SOUND_T 400
-#define PAUSE_T 400
-#define CYCLE 3
+#define SOUND_T 500
+#define PAUSE_T 6500
+#define CYCLE 100
 
 volatile uint8_t play_sound = 0;  // Флаг воспроизведения звука
 volatile uint8_t cycle_count = 0; // Счетчик циклов
@@ -37,10 +37,9 @@ void setup_interrupts()
     MCUCR&=~(1<<ISC00);
     MCUCR&=~(1<<ISC01);
     DDRB &= ~(1 << PB1);  // вход
-    DDRB &= ~(1 << PB2);
-    PORTB |= (1 << PB1)|(1 << PB2);  // подтягивающтй резистор
+    PORTB |= (1 << PB1);  // подтягивающтй резистор
     GIMSK |= (1 << PCIE); // external pin interrupt is enabled
-    PCMSK |= (1 << PCINT1) | (1 << PCINT2);
+    PCMSK |= (1 << PCINT1);
     asm("sei");
 }
 void sound_on()
@@ -55,7 +54,7 @@ void sound_off()
 // Этому указателю присваиваем нулевое значение (вернее - указатель на нулевой адрес).
 // При обращении к функции по указателю МК перейдет на команду с адресом равным значению указателя
 // функции - в данном случае: указан адрес 0 как адрес начала функции.
-void (*Reset)(void) = 0;
+//void (*Reset)(void) = 0;
 
 int main(void)
 {
@@ -79,20 +78,13 @@ int main(void)
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_bod_disable();
     sleep_mode();
-    /*
-         //   sleep_flag = 1;
-             MCUCR |= (1<<SM1);  //режим Power-down
-            MCUCR &= ~(1<<SM0);
-            MCUCR |= (1<<SE);
-            sleep_cpu();
-            asm("sleep");
-    */
+   
     return 0;
 }
 
 ISR(PCINT0_vect)
 {
-     if (!(PINB & (1 << PB2)))
+   /*  if (!(PINB & (1 << PB2)))
     {
         sleep_disable();
        // play_sound = 1;
@@ -100,18 +92,17 @@ ISR(PCINT0_vect)
        // asm("sei");
         Reset();
     }
-     
+    */ 
      if (!(PINB & (1 << PB1)))
      
     {
-        //	_delay_ms (50);
+        	_delay_ms (50);
         
-        //    play_sound = 0;
-           // cycle_count = 0;
-            // Вход в спящий режим
             set_sleep_mode(SLEEP_MODE_PWR_DOWN);
             sleep_bod_disable();
             sleep_mode();
+          
+
     }
 
         /*
