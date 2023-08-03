@@ -1,1 +1,6 @@
 Metronom_gpt/
+.pio/
+.pio/build/attiny13a/.sconsign311.dblite
+.pio/build/attiny13a/firmware.elf
+.pio/build/attiny13a/firmware.hex
+.pio/build/attiny13a/src/main.cpp.o
