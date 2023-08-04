@@ -1,4 +1,5 @@
 // #include <Arduino.h>
+//_delay_ не принимают таких значений
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
