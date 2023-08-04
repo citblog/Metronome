@@ -9,13 +9,13 @@
 #define SOUND_FREQUENCY 4000
 // Вычисление необходимого делителя для достижения заданной частоты звука
 // #define PRESCALER ((F_CPU / (16 * SOUND_FREQUENCY)) - 1) //(4800000/8)/(2*4000)-1=74
-#define SOUND_T 400   //0  // 4000*0.000125=0.5
-#define PAUSE_T 520 //00 // 52000*0.000125=6.5
+#define SOUND_T 4000  // 4000*0.000125=0.5
+#define PAUSE_T 4000 //00 // 52000*0.000125=6.5
 #define CYCLE 3
 
-volatile uint8_t play_sound = 0;  // Флаг воспроизведения звука
+//volatile uint8_t play_sound = 0;  // Флаг воспроизведения звука
 volatile uint8_t cycle_count = 0; // Счетчик циклов
-uint16_t tik = 0;
+volatile uint16_t tik = 0;
 
 void setup_CTC()
 {
@@ -30,8 +30,7 @@ void setup_CTC()
     // включение прерывания по совпадению
     TIMSK0 |= (1 << OCIE0A);
      sei();
-  //  DDRB |= (1 << PB4); // выход
-                        // PORTB |= (1 << PB4); //1
+  
 }
 
 void setup_interrupts()
@@ -45,16 +44,7 @@ void setup_interrupts()
     PCMSK |= (1 << PCINT1);
     asm("sei");
 }
-/*
-void sound_on()
-{
-    TCCR0A |= (1 << COM0A0);
-}
-void sound_off()
-{
-    TCCR0A &= ~(1 << COM0A0);
-}
-*/
+
 // Это - указатель на функцию - т.е. ячейка памяти, которая содержит адрес начала функции.
 // Этому указателю присваиваем нулевое значение (вернее - указатель на нулевой адрес).
 // При обращении к функции по указателю МК перейдет на команду с адресом равным значению указателя
@@ -65,13 +55,12 @@ int main(void)
 {
     setup_CTC();
     setup_interrupts();
-    play_sound = 1;
+   // play_sound = 1;
 
     while (cycle_count < CYCLE)
     {
     }
-    /// play_sound = 0;
-    // Вход в спящий режим
+        // Вход в спящий режим
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_bod_disable();
     sleep_mode();
@@ -82,48 +71,30 @@ int main(void)
 ISR(TIM0_COMPA_vect)
 {
     tik++;
-    // PORTB ^= (1 << PB4);
-
-    if (tik <= SOUND_T)
+    // PORTB ^= (1 << PB2);
+ 
+    if (tik < SOUND_T)
     {
         PORTB ^= (1 << PB2);
-        /*
-         if (!play_sound)
-         {
-             PORTB ^=(1<<PB0);
-             //sound_on();
-             play_sound = 1;
-         }
-         */
     }
 
-    if ((tik > SOUND_T) && (tik < (SOUND_T + PAUSE_T)))
+    else if ((tik > SOUND_T) && (tik < (SOUND_T + PAUSE_T)))
     {
         PORTB &= ~(1 << PB2);
-        /* if (play_sound)
-         {
-             sound_off();
-             play_sound = 0;
-         }
-         */
+      
     }
-    else
+    else if (tik > (SOUND_T + PAUSE_T))
     {
         tik = 0;
         cycle_count++;
     }
+   
 }
+
+
 ISR(PCINT0_vect)
 {
-    /*  if (!(PINB & (1 << PB2)))
-     {
-         sleep_disable();
-        // play_sound = 1;
-        // cycle_count = 0;
-        // asm("sei");
-         Reset();
-     }
-     */
+    
     if (!(PINB & (1 << PB1)))
 
     {
@@ -134,14 +105,5 @@ ISR(PCINT0_vect)
         sleep_mode();
     }
 
-    /*
-    MCUCR |= (1<<SM1);  //режим Power-down
-    MCUCR &= ~(1<<SM0);
-    MCUCR |= (1<<SE);   // recommended to write the Sleep Enable (SE) bit to one just before the execution of
-                        //the SLEEP instruction and to clear it immediately after waking up.
-    //GIMSK |= (1<<INT0);  //external pin interrupt is enabled
-    //PCMSK |= (1<<PCINT2);
-    sleep_cpu();
-    asm("sleep");
-   */
+   
 }
