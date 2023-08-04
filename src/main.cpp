@@ -13,13 +13,14 @@
 
 int main(void) {
     // Настройка порта для генерации звука
-    DDRB |= (1 << PB1)|(1 << PB0);
+    DDRB |= (1 << PB2);
+    //|(1 << PB0);
 
     // Настройка таймера
     TCCR0A=0;
     TCCR0B=0;
     TCCR0A |= (1 << WGM01); // Выбор режима CTC (Clear Timer on Compare)
-    TCCR0A |=(1<<COM0A0) ; //Toggle OC0A on Compare Match
+    ///TCCR0A |=(1<<COM0A0) ; //Toggle OC0A on Compare Match
     TCCR0B |= (1 << CS01) ; // Установка предделителя на 8 |(1 << CS00) 64
 
    // OCR0A = PRESCALER; // Установка значения для генерации нужной частоты
@@ -41,5 +42,5 @@ int main(void) {
 // Обработчик прерывания
 ISR(TIM0_COMPA_vect){
     // Инвертирование состояния пина для генерации звука
-    PORTB ^= (1 << PB1);
+    PORTB ^= (1 << PB2);
 }
