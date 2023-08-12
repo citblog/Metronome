@@ -6,11 +6,11 @@
 
 #define F_CPU 4800000UL
 // Определение частоты звука
-#define SOUND_FREQUENCY 4000
+#define SOUND_FREQUENCY 2000
 // Вычисление необходимого делителя для достижения заданной частоты звука
-// #define PRESCALER ((F_CPU / (16 * SOUND_FREQUENCY)) - 1) //(4800000/8)/(2*4000)-1=74
-#define SOUND_T 2000  // 4000*0.000125=0.5
-#define PAUSE_T 54000 //00 // 52000*0.000125=6.5
+// #define PRESCALER ((F_CPU / (16 * SOUND_FREQUENCY)) - 1) //(4800000/8)/(2*2000)-1=149
+#define SOUND_T 1000  // 1000*0.00025=0.25
+#define PAUSE_T 31000 //00 // 31000*0.00025=7.75
 #define CYCLE 100
 
 //volatile uint8_t play_sound = 0;  // Флаг воспроизведения звука
@@ -24,7 +24,7 @@ void setup_CTC()
     TCCR0A |= (1 << WGM01); // Выбор режима CTC (Clear Timer on Compare)
                             //  TCCR0A |= (1 << COM0A0); // Toggle OC0A on Compare Match
     TCCR0B |= (1 << CS01);  // Установка предделителя на 8 |(1 << CS00) 64
-    OCR0A = 74;             // период 0,000125 сек
+    OCR0A = 149;             // период 0,00025 сек
    // DDRB |= (1 << PB0);     // выход OC0A
     DDRB |= (1 << PB2); 
     // включение прерывания по совпадению
