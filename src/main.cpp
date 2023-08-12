@@ -9,9 +9,9 @@
 #define SOUND_FREQUENCY 4000
 // Вычисление необходимого делителя для достижения заданной частоты звука
 // #define PRESCALER ((F_CPU / (16 * SOUND_FREQUENCY)) - 1) //(4800000/8)/(2*4000)-1=74
-#define SOUND_T 4000  // 4000*0.000125=0.5
-#define PAUSE_T 4000 //00 // 52000*0.000125=6.5
-#define CYCLE 3
+#define SOUND_T 2000  // 4000*0.000125=0.5
+#define PAUSE_T 54000 //00 // 52000*0.000125=6.5
+#define CYCLE 100
 
 //volatile uint8_t play_sound = 0;  // Флаг воспроизведения звука
 volatile uint8_t cycle_count = 0; // Счетчик циклов
